@@ -10,6 +10,7 @@ var Stats = createReactClass({
             return (
                 <div>
                     {items[0].Response.data.inventoryItem.itemTypeName} - {items[0].Response.data.inventoryItem.itemName}
+                    <script>document.write(document.querySelector("div").innerText)</script>
                 </div>
             );
         }
