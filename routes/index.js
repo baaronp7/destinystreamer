@@ -85,31 +85,32 @@ router.get('/stats', function(request, response) {
       
             //get the characters items
             destinyNightBot.items(json, function(items) {
-                var initialState = { 
-                    characterBase: JSON.parse(json).Response.data.characterBase,
-                    items: items,
-                    type: type
-                };
-                var store = Redux.createStore(reducer, initialState);
+                var characterBase = JSON.parse(json).Response.data.characterBase;
+                var items = JSON.parse(items);
+                var text = "";
 
-                var context = {};
-                var html = ReactDOMServer.renderToString(
-                    <Provider store={store}>
-                        <StaticRouter location={request.url} context={context}>
-                            {
-                                <Route exact path='/stats' component={Stats} />
-                            }
-                        </StaticRouter>
-                    </Provider>
-                );
-
-                if (context.status >= 400) {
-                    response.status(context.status).send(html);
-                } else if (context.url) {
-                    response.redirect(context.status, context.url);
-                } else {
-                    response.send(html);
-                }
+                if(type == "CLASS" || type == "0")
+                    text = items[0].Response.data.inventoryItem.itemTypeName + " - " + items[0].Response.data.inventoryItem.itemName;
+                else if(type == "HELM" || type == "1")
+                    text = items[1].Response.data.inventoryItem.tierTypeName + " " + items[1].Response.data.inventoryItem.itemTypeName + " - " + items[1].Response.data.inventoryItem.itemName;
+                else if(type == "ARM" || type == "2")
+                    text = items[2].Response.data.inventoryItem.tierTypeName + " " + items[2].Response.data.inventoryItem.itemTypeName + " - " + items[2].Response.data.inventoryItem.itemName;
+                else if(type == "CHEST" || type == "3")
+                    text = items[3].Response.data.inventoryItem.tierTypeName + " " + items[3].Response.data.inventoryItem.itemTypeName + " - " + items[3].Response.data.inventoryItem.itemName;
+                else if(type == "LEG" || type == "4")
+                    text = items[4].Response.data.inventoryItem.tierTypeName + " " + items[4].Response.data.inventoryItem.itemTypeName + " - " + items[4].Response.data.inventoryItem.itemName;
+                else if(type == "CLASSITEM" || type == "5")
+                    text = items[5].Response.data.inventoryItem.tierTypeName + " " + items[5].Response.data.inventoryItem.itemTypeName + " - " + items[5].Response.data.inventoryItem.itemName;
+                else if(type == "PRIMARY" || type == "6")
+                    text = items[6].Response.data.inventoryItem.tierTypeName + " " + items[6].Response.data.inventoryItem.itemTypeName + " - " + items[6].Response.data.inventoryItem.itemName;
+                else if(type == "SECONDARY" || type == "7")
+                    text = items[7].Response.data.inventoryItem.tierTypeName + " " + items[7].Response.data.inventoryItem.itemTypeName + " - " + items[7].Response.data.inventoryItem.itemName;
+                else if(type == "HEAVY" || type == "8")
+                    text = items[8].Response.data.inventoryItem.tierTypeName + " " + items[8].Response.data.inventoryItem.itemTypeName + " - " + items[8].Response.data.inventoryItem.itemName;
+                else
+                    text = "Please set valid type paramater. Example: ?type=CLASS";
+                
+                response.send(text);
             });
         });
     });
