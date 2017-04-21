@@ -8,7 +8,6 @@ var Route = ReactRouter.Route;
 var Provider = require('react-redux').Provider;
 var Layout = require('../views/Layout.jsx');
 var Home = require('../views/Index.jsx');
-var Stats = require('../views/Stats.jsx');
 var About = require('../views/About.jsx');
 var NotFound = require('../views/NotFound.jsx');
 var destinyNightBot = require('../destinyNightBot');
