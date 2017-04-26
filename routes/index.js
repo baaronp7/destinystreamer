@@ -9,6 +9,7 @@ var Provider = require('react-redux').Provider;
 var Layout = require('../views/Layout.jsx');
 var Home = require('../views/Index.jsx');
 var About = require('../views/About.jsx');
+var CharacterPreview = require('../views/CharacterPreview.js');
 var NotFound = require('../views/NotFound.jsx');
 var destinyNightBot = require('../destinyNightBot');
 
@@ -21,14 +22,14 @@ router.get('/', function(request, response) {
 
     var wpTag = request.query.wpTag;
     if(wpTag == undefined)
-        wpTag = "character-item-api";
+        wpTags = "description,destiny-widget,destiny-bot-apis";
 
-    destinyNightBot.wordpress(wpSite, wpTag, function(postJSON) {
+    destinyNightBot.wordpress(wpSite, wpTags, function(postJSON) {
         var getCharacter = null;
 
         var initialState = { 
             title: "Bot API's",
-            content: JSON.parse(postJSON).posts[0].content
+            posts: JSON.parse(postJSON).posts
         };
 
         var store = Redux.createStore(reducer, initialState);
@@ -57,27 +58,37 @@ router.get('/', function(request, response) {
 });
 
 router.get('/stats', function(request, response) {
-    var memType = request.query.memType;
-    if(memType == undefined)
-        memType = "1";
-
-    var account = request.query.account;
-    if(account == undefined)
-        account = "4611686018429670931";
-    
-    var character = request.query.character;
+    var errorMsg = "";
 
     var type = request.query.type;
     if(type == undefined)
-        type = "ALL";
+        errorMsg = "Please set valid type paramater. Example: type=CLASS";
+
+    var account = request.query.account;
+    if(account == undefined)
+        errorMsg = "Please set valid account paramater. Example: account=4611686018429670931";
+    
+    var memType = request.query.memType;
+    if(memType == undefined)
+        errorMsg = "Please set valid account memType. Example: memType=1";
+
+    //missing a manditory parameter return error message
+    if (errorMsg !== "") { response.send(errorMsg); return; }
+    
+    var charID = request.query.charID;
 
     destinyNightBot.getAccount(memType, account, function(accountJSON) {
         var getCharacter = null;
 
-        //Get last played character or character passed in url
-        destinyNightBot.character(character, accountJSON, function(c){
-            getCharacter = c;
-        });
+        if(charID == undefined) {
+            //Get last played character or character passed in url
+            destinyNightBot.character(charID, accountJSON, function(c){
+                getCharacter = c;
+            });
+        }
+        else {
+            getCharacter = charID;
+        }
 
         //get character json
         destinyNightBot.getCharacter(memType, account, getCharacter, function(json) {
@@ -106,14 +117,76 @@ router.get('/stats', function(request, response) {
                     text = items[7].Response.data.inventoryItem.tierTypeName + " " + items[7].Response.data.inventoryItem.itemTypeName + " - " + items[7].Response.data.inventoryItem.itemName;
                 else if(type == "HEAVY" || type == "8")
                     text = items[8].Response.data.inventoryItem.tierTypeName + " " + items[8].Response.data.inventoryItem.itemTypeName + " - " + items[8].Response.data.inventoryItem.itemName;
+                else if(type == "JSON")
+                    text = items;
                 else
-                    text = "Please set valid type paramater. Example: ?type=CLASS";
+                    text = "Please set valid type paramater. Example: type=CLASS";
                 
-                response.send(text);
+                if(errorMsg == "")
+                    response.send(text);
             });
         });
     });
 });
+
+router.get('/widgets/character', function(request, response) {
+    var errorMsg = "";
+
+    var account = request.query.account;
+    if(account == undefined)
+        errorMsg = "Please set valid account paramater. Example: account=4611686018429670931";
+    
+    var memType = request.query.memType;
+    if(memType == undefined)
+        errorMsg = "Please set valid account memType. Example: memType=1";
+
+    //missing a manditory parameter return error message
+    if (errorMsg !== "") { response.send(errorMsg); return; }
+
+    var charID = request.query.charID;
+
+    destinyNightBot.getAccount(memType, account, function(accountJSON) {
+        var getCharacter = null;
+
+        if(charID == undefined) {
+            //Get last played character or character passed in url
+            destinyNightBot.character(charID, accountJSON, function(c){
+                getCharacter = c;
+            });
+        }
+        else {
+            getCharacter = charID;
+        }
+
+        //get character json
+        destinyNightBot.getCharacter(memType, account, getCharacter, function(json) {
+            var initialState = { title: "Carater Preview", json: JSON.parse(json).Response.data };
+            var store = Redux.createStore(reducer, initialState);
+
+            var context = {};
+            var html = ReactDOMServer.renderToString(
+                <Provider store={store}>
+                    <StaticRouter location={request.url} context={context}>
+                        {
+                            <Layout>
+                                <Route exact path='/widgets/character' component={CharacterPreview} />
+                            </Layout>
+                        }
+                    </StaticRouter>
+                </Provider>
+            );
+
+            if (context.status >= 400) {
+                response.status(context.status).send(html);
+            } else if (context.url) {
+                response.redirect(context.status, context.url);
+            } else {
+                response.send(html);
+            }
+        });
+    });
+});
+
 
 router.get('/about', function(request, response) {
     var initialState = { title: 'Universal React' };

@@ -13,7 +13,7 @@ var Layout = createReactClass({
             <html>
                 <head>
                     <title>{custom.title}</title>
-                    <link rel='stylesheet' href='css/style.css' />
+                    <link rel='stylesheet' href='/css/style.css' />
                 </head>
                 <body>
                     {this.props.children}

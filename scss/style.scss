@@ -1,6 +1,8 @@
+@import "variables/colors";
+
 body {
-    padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial;
+    margin: 0;
 
     ul li {
         margin-top: 10px;
@@ -9,16 +11,77 @@ body {
             margin-top: 5px;
             border-collapse: collapse;
             border: 1px solid #ccc;
-
-            tr:nth-child(even) {background-color: #f2f2f2}
+            color: $textColor2;
+            
+            tr { background-color: #fff; }
+            tr:nth-child(even) { background-color: $textColor }
             th {
-                background-color: #4CAF50;
-                color: white;
+                background-color: $palette5;
+                color: #fff;
             }
             th, td {
                 border: 1px solid #ccc;
                 padding: 15px;
                 text-align: left;
+            }
+        }
+    }
+
+    div.description, div.destiny-widget, div.destiny-bot-apis  {
+        background-color: $palette4;
+        color: $textColor;
+        padding: 30px;
+        font-size: 16px;
+
+        a {
+            color: $palette5;
+            text-decoration: none;
+        }
+    }
+
+    div.destiny-widget { background-color: $palette1; }
+
+    div.destiny-bot-apis { background-color: $palette2; }
+
+    div.character-preview {
+        width: 474px;
+        display: inline-block;
+
+        img {
+            float: left;
+            width: 75px;
+            height: 75px;
+        }
+        div.characterInfo {
+            float: left;
+            width: 399px;
+
+            h2.name {
+                float: left;
+                margin: 10px;
+                font-size: 16px;
+                color: #555;
+            }
+            div.light {
+                float: right;
+                margin: 10px;
+                color: #f5dc56;
+                font-size: 16px;
+            }
+            h4.race {
+                clear: both;
+                float: left;
+                font-weight: normal;
+                margin: 10px;
+                color: #ccc;
+                font-size: 14px;
+            }
+            h4.level {
+                float: right;
+                font-weight: normal;
+                margin: 10px;
+                color: #ccc;
+                font-size: 14px;
             }
         }
     }

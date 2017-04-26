@@ -5,10 +5,12 @@ var createReactClass = require('create-react-class');
 var Index = createReactClass({
     render: function() {
         var custom = this.props.custom;
+        var tagName = "";
         return (
             <div>
-                <h1>{custom.title}</h1>
-                <div dangerouslySetInnerHTML={{__html: custom.content}}></div>
+                {custom.posts.map(post =>
+                    <div key={post.ID} className={((obj) => {for(k in obj) { return obj[k].name; }})(post.tags)} dangerouslySetInnerHTML={{__html: post.content}}></div>
+                )}
             </div>
         );
     }

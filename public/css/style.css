@@ -1,20 +1,74 @@
+/*
+$palette1: #00AEEF;
+$palette2: #0064A9;
+$palette3: #8A888C;
+$palette4: #4B4A4C;
+$palette5: #414042;*/
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial; }
+  font: 14px "Lucida Grande", Helvetica, Arial;
+  margin: 0; }
   body ul li {
     margin-top: 10px; }
     body ul li table {
       margin-top: 5px;
       border-collapse: collapse;
-      border: 1px solid #ccc; }
+      border: 1px solid #ccc;
+      color: #333333; }
+      body ul li table tr {
+        background-color: #fff; }
       body ul li table tr:nth-child(even) {
-        background-color: #f2f2f2; }
+        background-color: #F2F2F2; }
       body ul li table th {
-        background-color: #4CAF50;
-        color: white; }
+        background-color: #8C4646;
+        color: #fff; }
       body ul li table th, body ul li table td {
         border: 1px solid #ccc;
         padding: 15px;
         text-align: left; }
+  body div.description, body div.destiny-widget, body div.destiny-bot-apis {
+    background-color: #588C7E;
+    color: #F2F2F2;
+    padding: 30px;
+    font-size: 16px; }
+    body div.description a, body div.destiny-widget a, body div.destiny-bot-apis a {
+      color: #8C4646;
+      text-decoration: none; }
+  body div.destiny-widget {
+    background-color: #D96459; }
+  body div.destiny-bot-apis {
+    background-color: #F2AE72; }
+  body div.character-preview {
+    width: 474px;
+    display: inline-block; }
+    body div.character-preview img {
+      float: left;
+      width: 75px;
+      height: 75px; }
+    body div.character-preview div.characterInfo {
+      float: left;
+      width: 399px; }
+      body div.character-preview div.characterInfo h2.name {
+        float: left;
+        margin: 10px;
+        font-size: 16px;
+        color: #555; }
+      body div.character-preview div.characterInfo div.light {
+        float: right;
+        margin: 10px;
+        color: #f5dc56;
+        font-size: 16px; }
+      body div.character-preview div.characterInfo h4.race {
+        clear: both;
+        float: left;
+        font-weight: normal;
+        margin: 10px;
+        color: #ccc;
+        font-size: 14px; }
+      body div.character-preview div.characterInfo h4.level {
+        float: right;
+        font-weight: normal;
+        margin: 10px;
+        color: #ccc;
+        font-size: 14px; }
 
 /*# sourceMappingURL=style.css.map */

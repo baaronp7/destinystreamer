@@ -8,16 +8,15 @@ var httpsf = require('follow-redirects').https;
 var Cookie = require('cookie');
 var _this = this;
 
-exports.wordpress = function(wpSite, wpTag, callback) {
+exports.wordpress = function(wpSite, wpTags, callback) {
 	var contentsJSON = null;
 
 	var options = {
 	  host: 'public-api.wordpress.com',
-	  path: '/rest/v1.1/sites/' + wpSite + '/posts?tag=' + wpTag,
+	  path: '/rest/v1.1/sites/' + wpSite + '/posts?tag=' + wpTags,
 	};
 
 	var req = https.get(options, function(res) {
-		console.log(options);
 		var bodyChunks = [];
 		res.on('data', function(chunk) {
 			bodyChunks.push(chunk);
